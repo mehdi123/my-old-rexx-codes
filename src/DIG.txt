@@ -1,0 +1,17 @@
+ /* D DIGIT  */
+PULL D
+  DO I=1 TO 100 
+      IF HASDIGIT(D,I) & HASDIGIT(D,I*I) & HASDIGIT(D,I*I*I) THEN
+           SAY   D  I  I*I  I*I*I
+  END
+RETURN
+HASDIGIT : PROCEDURE
+  ARG  D,N   
+  IF D=0 & N=0  THEN
+	RETURN 1
+  IF  N=0 THEN
+      	RETURN 0
+  IF N//10 =D THEN
+	RETURN 1  
+RETURN HASDIGIT(D,N%10)         
+  

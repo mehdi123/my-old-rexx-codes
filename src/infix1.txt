@@ -1,0 +1,75 @@
+st=''
+post=''
+say 'enter the expression'
+pull inf 
+inf ='(' inf ')'
+do while inf~=''
+  tok=nexttoken()
+  if isdelimiter(tok) then
+    call updatestack tok
+  else
+    post=post tok
+end
+do while st~='' & inf~=''
+       call removeandappend
+end
+say post
+return
+
+updatestack : procedure expose post st
+arg p
+  select 
+    when p='(' then
+      call push p
+    when p=')'  then 
+      do
+        do while st~='' & top()~='('
+          call removeandappend
+        end
+        p=pop()
+     end
+   otherwise
+     do
+       do while (st~='')& (level(p)<=level(top()))
+         call removeandappend
+       end 
+       call push p
+    end
+  end
+return
+nexttoken : procedure expose inf
+    n=word(inf,1)
+    inf=subword(inf,2)
+    return n
+removeandappend : procedure expose st post
+      p=pop()
+      post=post p
+return
+isdelimiter : procedure
+arg p
+  if pos=(p,'+-*/()')=0 then
+    return 0
+return 1
+push : procedure expose st
+arg a
+  st=st a
+return
+pop : procedure expose st
+     p=word(st,1)
+     st=subword(st,2)
+return p
+top : procedure expose st
+ return word(st,1)
+level : procedure 
+  arg p
+    select
+         when p='*' | p='/' then
+                    return 10
+         when p='+' | p='-' then
+           return 5
+          when p='(' | p=')' then
+                    return 2
+     end
+return  
+    
+    

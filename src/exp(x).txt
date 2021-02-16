@@ -1,0 +1,16 @@
+/* exp(x)  */
+do i=0 to 1 by 0.1
+  say  i  exp(i)
+end
+return
+exp : procedure 
+arg x
+e=1
+h=1 
+ do k=1 to 400 
+   h=h*x/k
+   e=e+h
+   if h<(e/1000000)  then
+       return e
+  end
+return e

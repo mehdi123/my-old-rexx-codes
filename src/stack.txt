@@ -1,0 +1,26 @@
+/**/						
+st=''
+pull exp
+do i=1 to words(exp)
+   t=word(exp,i)
+   if isoperator(t) then
+       call doOp t
+   else
+       call push t
+end
+say exp'='pop
+return
+isoprator : procedure 
+ arg op
+   if pos(op,'+ - * /')=0 then
+      return 0
+    return 1 
+push : procedure expose st
+arg n
+st=n st
+return
+pop : procedure expose st
+n=word(st,1)
+st=subword(st,2)
+return n
+doOp	           

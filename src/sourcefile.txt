@@ -1,0 +1,12 @@
+a res 4
+a res 10
+b res 2
+c res 3
+d res 0
+back lda a 
+add b 
+mpy c
+sto d 
+wwd d
+bru back
+hlt

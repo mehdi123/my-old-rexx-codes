@@ -1,0 +1,37 @@
+/**/
+pull filename
+stan="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+key="ZABCDEFGHIJKLMBNOPQRSTVWXY"
+do i=1 to lines(filename)
+  a.i=removeblanks(linein(filename))
+a.i=lineout('d:\sam.txta')
+return
+removeblanks : prcedure
+ arg x
+ s=""
+  do j=1 to length(x)
+    if substr(x,j,1)~=" " then
+             s=s||substr(x,j,1)
+  end
+ return s
+do i=1 to lines(filename)
+      a.i=encodeline(a.i)
+end
+return
+ encodeline : procedure
+  arg y
+f=""
+d=""
+    do j=1 to length(y)
+          f=encodechar(substr(y,j,1))
+           d=d||f   
+     end
+ return d
+return
+encodechar : procedure
+a=0
+arg g
+i=pos(g,stan) 
+a.i=a.i+1
+g=substr(key,i+a.i-1,1)
+return g 

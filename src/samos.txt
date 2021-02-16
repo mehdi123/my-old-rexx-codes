@@ -1,0 +1,204 @@
+/**/
+D=0
+E=0
+N='a:\sourcefile.txt'
+ERR. =''
+src. =''
+DO I=1 TO LINES('a:\sourcefile.txt')
+    SRC.I=LINEIN('a:sourcefile.txt')
+    SAY SRC.I
+    CALL CONSTRUCT_SOURCE_CODE SRC.I
+END
+CALL CONSTRUCT_OBJECT_CODE 
+RETURN
+
+CONSTRUCT_SOURCE_CODE:PROCEDURE EXPOSE I D E SYMBOL. LABEL. 
+ ARG SRC.I
+  IF POS('RES',SRC.I)~=0 THEN
+    DO
+      IF WORDS(SRC.I)=3 THEN
+          CALL MAKE_SYMBOL_TABLE SRC.I
+     ELSE 
+          ERR.I='THERE IS (AN) ERROR(S) IN LINE '||I
+   END  
+IF WORDS(SRC.I)=3 THEN
+     DO
+       C=WORD(SRC.I,2) 
+       IF C='LDA'|C='ADD'|C='MPY'|C='SUB'|C='DIV'|C='STO'|C='WWD' THEN
+             CALL MAKE_SYMBOL_TABLE SRC.I
+      END
+RETURN
+   
+MAKE_SYMBOL_TABLE:PROCEDURE EXPOSE I D E SYMBOL. LABEL.
+ARG SRC.I
+  IF WORD(SRC.I,2)='RES' THEN
+     DO
+        SYMTAB.I=WORD(SRC.I,1)
+        SAY SYMTAB.I
+        E=E+1  
+        say E     
+     END
+   C=WORD(SRC.I,2)
+  IF C='LDA'|C='ADD'|C='MPY'|C='SUB'|C='DIV'|C='STO'|C='WWD' THEN      
+       DO 
+        LABEL.I=WORD(SRC.I,1)
+        SAY LABEL.I
+        D=D+1
+      END
+RETURN
+    
+FINDERROR : PROCEDURE EXPOSE SYMBOL. LABEL. E D ERR.
+K=0
+DO until K~=0 
+   k=k+1
+     DO I=1 TO E 
+           IF I~=K & SYMBOL.I=SYMBOL.K THEN
+                        DO 
+                         ERR.K='THERE IS MORE THAN ONE VARIABLE HAS INITIALIZED'
+                         K=0
+                         SAY ERR.K
+                         RETURN
+                        END
+     END
+ END
+H=0 
+DO WHILE H~=0  
+   H=H+1
+     DO I=1 TO D
+           IF I~=H & LABEL.I=LABEL.H THEN
+                       do
+                         ERR.H='THERE IS MORE THAN ONE LABEL '
+                         SAY ERR.H
+                         H=0
+                         RETURN
+                       END
+             
+    END
+ END /* 80 */
+RETURN
+
+CONSTRUCT_OBJECT_CODE : PROCEDURE EXPOSE SYMBOL. LABEL. E D N SRC.
+I=1
+DO  WHILE WORD(SRC.I,2)~='RES' & I<E  
+   IF WORD(SRC.I,3)<0 THEN
+     SIGN='-'
+   ELSE
+     SIGN='+'
+         OBJ.I=SIGN||'000000'||COPIES('0',4-LENGTH(WORD(SRC.I,3)))||WORD(SRC.I,3)  
+      SAY OBJ.I
+I=I+1
+END
+H=E+1  
+DO J=I TO LINES(N)
+    OP=GETOPCODE() 
+    OBJ.J=OP||'000'
+    SAY OBJ.J
+END
+RETURN
+GETOPCODE :PROCEDURE EXPOSE SYMBOL. LABEL. E D N SRC. H
+TRACE ?R
+OPE=''
+      IF WORDS(SRC.H)=3 THEN
+       DO  
+        C=WORD(SRC.H,2)
+         IF C='LDA'|C='ADD'|C='MPY'|C='SUB'|C='DIV'|C='STO'|C='WWD' THEN 
+            DO 
+                 H=H+1 
+                 RETURN WORD(SRC.H,2) 
+            END
+       END
+         IF WORDS(SRC.H)=2 THEN
+           DO
+            C=WORD(SRC.H,1)
+            IF C='LDA'|C='ADD'|C='MPY'|C='SUB'|C='DIV'|C='STO'|C='WWD' THEN 
+              DO
+                 H=H+1 
+                 RETURN C 
+              END   
+           END  
+         IF WORDS(SRC.H)=1 THEN
+           DO
+             IF WORD(SRC.H,1)='HLT' THEN
+                DO
+                  H=H+1
+                  RETURN 'HLT'
+                END
+           END
+        
+     /*TADDRSS : PROCEDURE EXPOSE  SYMBOL. LABEL. E D N SRC. H
+  IF WORD(SRC.H)=3 THEN
+     DO 
+       OPR=WORD(SRC.H,3)
+        
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,18 @@
+
+/*calculation of cos(x)*/
+say 'valur of cos(x)'
+say 'enter the angle in degree'
+pull x 
+say 'enter the approximate'
+pull n 
+d=0
+do i=1 to n
+    p=1 	
+    do j=1 to 2*i-1
+       p=p*j
+    end   
+   p=p/(2*i-1)
+   s=((-1)**(i+1))*(x**(2*(i-1)))/p
+   d=d+s
+end
+say d

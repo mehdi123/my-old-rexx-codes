@@ -1,0 +1,20 @@
+/**/
+say 'enter the exp'
+pull inf
+tok=''
+do i=1 to lenght('inf')
+token=substr(inf,1,1)
+inf=substr(inf,2)
+if ~isdelimiter(token) then
+  do 
+       tok=token
+       do while   ~isdelimiter(tok)
+          tok=substr(inf,1,1)
+          inf=substr(inf,2)
+          token=token||tok
+       end
+    token=substr(token,1,length(token)-1)
+    inf=tok||inf
+ end
+say token
+end
